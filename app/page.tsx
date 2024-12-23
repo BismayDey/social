@@ -20,20 +20,8 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-
-// Mock useToast implementation
-export function useToast() {
-  const toast = ({
-    title,
-    description,
-  }: {
-    title: string;
-    description: string;
-  }) => {
-    alert(`${title}\n${description}`);
-  };
-  return { toast };
-}
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Page() {
   const [posts, setPosts] = useState([
@@ -64,7 +52,6 @@ export default function Page() {
   ]);
 
   const [newPost, setNewPost] = useState("");
-  const { toast } = useToast();
 
   const handlePostSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,10 +65,9 @@ export default function Page() {
       };
       setPosts([newPostObj, ...posts]);
       setNewPost("");
-      toast({
-        title: "Post created",
-        description: "Your post has been successfully created!",
-      });
+      toast.success("Your post has been successfully created!");
+    } else {
+      toast.error("Please write something to post!");
     }
   };
 
@@ -95,6 +81,7 @@ export default function Page() {
 
   return (
     <div className="max-w-2xl mx-auto p-4">
+      <ToastContainer />
       {/* Reels highlight */}
       <Card className="mb-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
         <CardContent className="flex items-center justify-between p-6">
